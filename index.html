@@ -145,21 +145,40 @@ h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;line-height:1.2}
   padding:0;
 }
 .toc-inner{
-  max-width:1100px;margin:0 auto;
-  display:flex;align-items:center;gap:0;overflow-x:auto;
-  scrollbar-width:none;
+  max-width:1180px;margin:0 auto;
+  display:flex;align-items:stretch;
 }
-.toc-inner::-webkit-scrollbar{display:none}
 .toc-brand{
-  font-family:'Montserrat',sans-serif;font-weight:800;font-size:16px;
-  color:var(--white);padding:14px 24px;white-space:nowrap;border-right:1px solid rgba(255,255,255,.1);
+  font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;
+  color:var(--white);padding:13px 20px;white-space:nowrap;
+  border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center;flex-shrink:0;
 }
+.toc-links{
+  display:flex;align-items:stretch;flex:1;
+  overflow-x:auto;scrollbar-width:none;
+}
+.toc-links::-webkit-scrollbar{display:none}
 .toc-inner a{
-  font-size:11px;font-weight:500;letter-spacing:.5px;color:rgba(255,255,255,.55);
-  text-decoration:none;padding:14px 14px;white-space:nowrap;
-  transition:color .2s;border-bottom:2px solid transparent;
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;letter-spacing:.3px;color:rgba(255,255,255,.6);
+  text-decoration:none;padding:13px 12px;white-space:nowrap;flex:1;justify-content:center;
+  transition:color .2s,background .2s;border-bottom:2px solid transparent;
 }
-.toc-inner a:hover{color:var(--green)}
+.toc-n{
+  font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;
+  color:var(--green);letter-spacing:1px;
+}
+.toc-inner a:hover{color:#fff;background:rgba(255,255,255,.05)}
+.toc-inner a:hover .toc-n{color:var(--green)}
+@media(max-width:900px){
+  .toc-inner a{flex:0 0 auto;justify-content:flex-start}
+  .toc-links{position:relative}
+  .toc-nav{position:relative}
+  .toc-nav::after{
+    content:'';position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;z-index:2;
+    background:linear-gradient(90deg,transparent,var(--navy));
+  }
+}
 
 /* ── LAYOUT ── */
 .page{max-width:1100px;margin:0 auto;padding:80px 32px}
@@ -215,7 +234,17 @@ h1,h2,h3,h4,h5{font-family:'Montserrat',sans-serif;line-height:1.2}
 .stat-box .stat-label{font-size:12px;color:var(--muted);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
 
 /* ── TABLE ── */
+.table-scroll{position:relative}
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--border)}
+.table-hint{
+  display:none;
+  align-items:center;gap:6px;
+  font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;color:var(--green-dark);
+  margin:0 0 8px 2px;
+}
+.table-hint svg{animation:hintSlide 1.6s ease-in-out infinite}
+@keyframes hintSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 table{width:100%;border-collapse:collapse;min-width:500px}
 thead{background:var(--navy)}
 thead th{
@@ -445,7 +474,27 @@ td .tag{
   .icp-body{grid-template-columns:1fr}
   .cover{padding:40px 24px}
   .toc-brand{padding:12px 16px}
+  .table-hint{display:flex}
 }
+
+/* ── BACK TO TOP ── */
+.back-to-top{
+  position:fixed;right:18px;bottom:18px;z-index:200;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--navy);border:1px solid rgba(255,255,255,.15);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 6px 20px rgba(15,61,94,.35);
+  opacity:0;visibility:hidden;transform:translateY(12px);
+  transition:opacity .3s,transform .3s,visibility .3s,background .2s;
+}
+.back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.back-to-top:hover{background:var(--green-dark)}
+.back-to-top svg{width:20px;height:20px}
+@media(prefers-reduced-motion:reduce){
+  .back-to-top{transition:opacity .2s,visibility .2s}
+  .table-hint svg{animation:none}
+}
+
 </style>
 </head>
 <body>
@@ -694,16 +743,18 @@ td .tag{
 <nav class="toc-nav">
   <div class="toc-inner">
     <div class="toc-brand">H2PL</div>
-    <a href="#s1">01 Essência</a>
-    <a href="#s2">02 Personalidade</a>
-    <a href="#s3">03 Clientes</a>
-    <a href="#s4">04 Posicionamento</a>
-    <a href="#s5">05 Identidade Verbal</a>
-    <a href="#s6">06 Slogans</a>
-    <a href="#s7">07 Arquitetura</a>
-    <a href="#s8">08 Redes Sociais</a>
-    <a href="#s9">09 Apresentações</a>
-    <a href="#s10">10 Governança</a>
+    <div class="toc-links">
+      <a href="#s1"><span class="toc-n">01</span>Essência</a>
+      <a href="#s2"><span class="toc-n">02</span>Personalidade</a>
+      <a href="#s3"><span class="toc-n">03</span>Clientes</a>
+      <a href="#s4"><span class="toc-n">04</span>Posicionamento</a>
+      <a href="#s5"><span class="toc-n">05</span>Identidade</a>
+      <a href="#s6"><span class="toc-n">06</span>Slogans</a>
+      <a href="#s7"><span class="toc-n">07</span>Arquitetura</a>
+      <a href="#s8"><span class="toc-n">08</span>Redes</a>
+      <a href="#s9"><span class="toc-n">09</span>Apresentações</a>
+      <a href="#s10"><span class="toc-n">10</span>Governança</a>
+    </div>
   </div>
 </nav>
 
@@ -738,7 +789,9 @@ td .tag{
 
   <!-- Valores -->
   <h3 style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:20px">Valores Fundamentais</h3>
-  <div class="table-wrap" style="margin-bottom:40px">
+  <div class="table-scroll">
+    <div class="table-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>Deslize para ver mais</div>
+    <div class="table-wrap" style="margin-bottom:40px">
     <table>
       <thead><tr><th>Valor</th><th>O que significa na prática</th><th>Como se manifesta</th></tr></thead>
       <tbody>
@@ -749,7 +802,7 @@ td .tag{
         <tr><td><strong>Parceria real</strong></td><td>Não entregamos relatório e saímos. Permanecemos até o resultado ser sustentado.</td><td>Ciclos de implementação, mentoria de liderança, acompanhamento de indicadores.</td></tr>
       </tbody>
     </table>
-  </div>
+  </div></div>
 
   <!-- Crenças -->
   <h3 style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:20px">Crenças da Marca</h3>
@@ -837,7 +890,9 @@ td .tag{
 
   <!-- Somos / Não Somos -->
   <h3 style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:20px">Somos / Não Somos</h3>
-  <div class="table-wrap" style="margin-bottom:40px">
+  <div class="table-scroll">
+    <div class="table-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>Deslize para ver mais</div>
+    <div class="table-wrap" style="margin-bottom:40px">
     <table>
       <thead><tr><th>✅ Somos</th><th>❌ Não Somos</th></tr></thead>
       <tbody>
@@ -850,7 +905,7 @@ td .tag{
         <tr><td><strong>Equilíbrio entre pessoas e resultado</strong></td><td>Consultoria que ignora o fator humano</td></tr>
       </tbody>
     </table>
-  </div>
+  </div></div>
 
   <!-- Tom emocional / racional -->
   <div class="card-grid card-grid-2">
@@ -1042,7 +1097,9 @@ td .tag{
 
   <!-- Mensagens -->
   <h3 style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:20px">Mensagens Comerciais</h3>
-  <div class="table-wrap" style="margin-bottom:40px">
+  <div class="table-scroll">
+    <div class="table-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>Deslize para ver mais</div>
+    <div class="table-wrap" style="margin-bottom:40px">
     <table>
       <thead><tr><th>Tipo</th><th>Mensagem</th><th>Uso Principal</th></tr></thead>
       <tbody>
@@ -1053,7 +1110,7 @@ td .tag{
         <tr><td><span class="tag">NR-1</span></td><td>Reduzimos o risco psicossocial da sua operação — e ainda melhoramos o resultado.</td><td>Abordagem regulatória</td></tr>
       </tbody>
     </table>
-  </div>
+  </div></div>
 
   <!-- Pitches -->
   <h3 style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:20px">Elevator Pitches</h3>
@@ -1084,7 +1141,9 @@ td .tag{
     <p class="section-intro">Como a H2PL fala — e como não fala. Cada contexto tem um ajuste de tom, mas o DNA é sempre o mesmo: executivo, direto e humano.</p>
   </div>
 
-  <div class="table-wrap" style="margin-bottom:40px">
+  <div class="table-scroll">
+    <div class="table-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>Deslize para ver mais</div>
+    <div class="table-wrap" style="margin-bottom:40px">
     <table>
       <thead><tr><th>Canal / Contexto</th><th>Tom</th><th>Características</th><th>Exemplo</th></tr></thead>
       <tbody>
@@ -1120,7 +1179,7 @@ td .tag{
         </tr>
       </tbody>
     </table>
-  </div>
+  </div></div>
 
   <!-- Palavras -->
   <div class="card-grid card-grid-2" style="margin-bottom:32px">
@@ -1186,7 +1245,9 @@ td .tag{
     <div class="slogan-item top"><div class="slogan-rank">05</div><div><div class="slogan-text">Da liderança ao resultado — sem atalhos.</div><div class="slogan-cat">Premium · Diferenciador</div></div></div>
   </div>
 
-  <div class="table-wrap">
+  <div class="table-scroll">
+    <div class="table-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>Deslize para ver mais</div>
+    <div class="table-wrap">
     <table>
       <thead><tr><th>#</th><th>Slogan</th><th>Categoria</th></tr></thead>
       <tbody>
@@ -1207,7 +1268,7 @@ td .tag{
         <tr><td>20</td><td>Pessoas e resultado — sem escolher um dos dois.</td><td><span class="tag">Humanizado</span></td></tr>
       </tbody>
     </table>
-  </div>
+  </div></div>
 </section>
 
 <div class="divider"></div>
@@ -1418,7 +1479,9 @@ td .tag{
   </div>
 
   <!-- Estruturas -->
-  <div class="table-wrap">
+  <div class="table-scroll">
+    <div class="table-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>Deslize para ver mais</div>
+    <div class="table-wrap">
     <table>
       <thead><tr><th>Tipo de Material</th><th>Estrutura de Slides / Seções</th><th>Regras</th></tr></thead>
       <tbody>
@@ -1444,7 +1507,7 @@ td .tag{
         </tr>
       </tbody>
     </table>
-  </div>
+  </div></div>
 </section>
 
 <div class="divider"></div>
@@ -1525,5 +1588,22 @@ td .tag{
   <div class="footer-note">Brand Book Executivo · Versão 1.0 · Junho 2026 · Documento Confidencial</div>
 </footer>
 
+<button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+<script>
+(function(){
+  var btn=document.getElementById('backToTop');
+  if(!btn)return;
+  var onScroll=function(){
+    if(window.scrollY>600){btn.classList.add('show');}else{btn.classList.remove('show');}
+  };
+  window.addEventListener('scroll',onScroll,{passive:true});
+  btn.addEventListener('click',function(){
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  });
+})();
+</script>
 </body>
 </html>
